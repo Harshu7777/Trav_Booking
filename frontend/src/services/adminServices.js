@@ -1,5 +1,5 @@
 import axios from 'axios';
-const API_URL = 'http://localhost:4000/api/admin';
+const API_URL = 'https://trav-booking.onrender.com';
 
 export const registerAdmin = async (formData) => {
   try {
