@@ -10,7 +10,6 @@ logs/
 debug.log
 
 # Environment variables
-.env
 
 # OS-specific files
 .DS_Store
