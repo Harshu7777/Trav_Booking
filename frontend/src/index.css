@@ -1,0 +1,106 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(113, 107, 107, 0.87);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Gradient background container */
+.gradient-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    45deg,
+    rgba(29, 167, 226, 0.561),
+    rgba(255, 7, 197, 0.629),
+    rgba(76, 175, 167, 0.571),
+    rgba(34, 255, 38, 0.7)
+  );
+  background-size: 300% 300%;
+  animation: gradientAnimation 8s ease infinite;
+  z-index: -1; /* Place it behind content */
+  pointer-events: none; /* Prevent interaction with this layer */
+}
+
+/* Gradient animation for dynamic effects */
+@keyframes gradientAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* General Layout */
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column; /* Allow content stacking */
+  min-width: 320px;
+  background-blend-mode: overlay; /* Blend the colors smoothly */
+  overflow: auto; /* Enable scrolling */
+}
+
+html, body {
+  height: 100%; /* Ensure the body spans the entire viewport */
+}
+
+/* Typography */
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Buttons */
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: rgba(115, 107, 107, 0.8);
+  color: #1a1a1a;
+  cursor: pointer;
+  transition: transform 0.3s ease, border-color 0.25s, box-shadow 0.3s;
+}
+
+button:hover {
+  border-color: rgba(255, 193, 7, 0.9);
+  box-shadow: 0 4px 10px rgba(255, 193, 7, 0.5);
+  transform: scale(1.05);
+}
+
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+/* Light Theme for Preferred Scheme */
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+  }
+
+  a:hover {
+    color: rgba(0, 0, 255, 0.9);
+  }
+
+  button {
+    background-color: #f9f9f9;
+    color: #213547;
+  }
+
+  button:hover {
+    border-color: rgba(76, 175, 80, 0.9);
+    box-shadow: 0 4px 10px rgba(76, 175, 80, 0.5);
+  }
+}

@@ -1,0 +1,26 @@
+@keyframes moveTestimonials {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+  
+  .scrollWrapper {
+    display: flex;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  
+  .scrollContent {
+    display: flex;
+    animation: moveTestimonials 25s linear infinite;
+  }
+  
+  .testimonialCard {
+    flex-shrink: 0;
+    min-width: 300px;
+    margin-right: 16px; /* Adjust spacing as needed */
+  }
+  
