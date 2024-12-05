@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getToken } from '../utils/getToken';
 
-const API_URL = 'http://localhost:4000/api/packages'; // Ensure this base URL is correct
+const API_URL = 'https://trav-booking-6.onrender.com/api/packages'; // Ensure this base URL is correct
 
 // Function to create a package
 export const createPackage = async (packageData) => {

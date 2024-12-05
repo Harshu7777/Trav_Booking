@@ -41,27 +41,26 @@ const Register = () => {
 
   return (
     <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: 2,
-        maxWidth: 400,
-        width: "100%", // Full width on smaller screens
-        minHeight: 400,
-        marginTop: 10,
-        marginLeft: 2,
-        padding: 4,
-        border: "1px solid #ccc",
-        borderRadius: 2,
-        boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.1)",
-        // Make the form responsive
-        "@media (max-width: 600px)": {
-          maxWidth: "90%", // Adjust maxWidth for smaller screens
-        },
-      }}
-    >
+  sx={{
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 2,
+    maxWidth: 400,
+    width: "100%", // Full width on smaller screens
+    height: '85vh',
+    margin: "0 auto", // Center horizontally
+    padding: 4,
+    border: "1px solid #ccc",
+    borderRadius: 2,
+    boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.1)",
+    // Make the form responsive
+    "@media (max-width: 600px)": {
+      maxWidth: "90%", // Adjust maxWidth for smaller screens
+    },
+  }}
+>
       <Typography variant="h4" component="h2" gutterBottom>
         Admin/User Registration
       </Typography>
@@ -128,4 +127,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Register;  

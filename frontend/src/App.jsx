@@ -20,7 +20,6 @@ import Dashboard from './pages/DashBoard';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import CreateContact from './pages/createContact';
-import ContactList from './pages/ContactList';
 
 // Initialize Stripe with your public key
 const stripePromise = loadStripe('pk_test_51QQ4RNHU864JrHStp0fhIgq0SI6isIkHe8wLmh5ObV6Z957z12zU5v4ppMLaZ4KzIZdGAI84htnIlHdKDuPAIARl00LDYI5BRI');

@@ -1,31 +1,70 @@
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { AppBar, Toolbar, Typography, Button, Box, Menu, MenuItem } from "@mui/material";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Box,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  IconButton,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
 
 function Navbar() {
-  // Assume we have an isAuthenticated state and a user object
-  const isAuthenticated = false; // Replace with actual auth state
-  const user = null; // Replace with actual user object
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = React.useState(false);
 
-  const handleMobileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-    setMobileMenuOpen(true);
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
   };
 
-  const handleMobileMenuClose = () => {
-    setAnchorEl(null);
-    setMobileMenuOpen(false);
-  };
+  const buttonStyles = { color: "black" }; // Reusable button styles
+
+  const drawerContent = (
+    <Box sx={{ width: 250, padding: 2 }}>
+      <Typography
+        variant="h6"
+        sx={{ fontFamily: "Poppins, sans-serif", fontWeight: 700, marginBottom: 2 }}
+      >
+        TOURIST_<span style={{ color: "orange" }}>VERS</span>
+      </Typography>
+      <List>
+        <ListItem button component={RouterLink} to="/">
+          <ListItemText primary="Home" />
+        </ListItem>
+        <ListItem button component={RouterLink} to="/login">
+          <ListItemText primary="Login" />
+        </ListItem>
+        <ListItem button component={RouterLink} to="/contacts">
+          <ListItemText primary="Contact Us" />
+        </ListItem>
+        <ListItem button>
+          <ListItemText primary="Flight" />
+        </ListItem>
+        <ListItem button>
+          <ListItemText primary="Hotels" />
+        </ListItem>
+        <ListItem button>
+          <ListItemText primary="Trains" />
+        </ListItem>
+        <ListItem button>
+          <ListItemText primary="Cabs" />
+        </ListItem>
+      </List>
+    </Box>
+  );
 
   return (
     <AppBar
       position="fixed"
       sx={{
         width: "100%",
-        zIndex: 1300, // Ensures it appears above other elements
+        zIndex: 1300,
         backgroundColor: "white",
+        color: "black",
       }}
     >
       <Toolbar>
@@ -39,146 +78,108 @@ function Navbar() {
             color: "red",
             fontFamily: "Poppins, sans-serif",
             fontWeight: 700,
-            fontSize: { xs: "1.5rem", sm: "1.8rem" }, // Responsive font size
+            fontSize: { xs: "1.5rem", sm: "1.8rem" },
             display: "flex",
             alignItems: "center",
-            "& span": {
-              color: "orange",
-            },
           }}
         >
-          TOURIST_<span>VERS</span>
+          TOURIST_<span style={{ color: "orange" }}>VERS</span>
         </Typography>
 
-        {/* Menu for larger screens */}
-        <Box
-          sx={{
-            display: { xs: "none", sm: "flex" }, // Hide on small screens
-            marginLeft: "30px",
-            fontSize: { xs: "0.9rem", sm: "1.1rem" },
-            cursor: "pointer",
-          }}
-        >
-          <span style={{ color: "black", marginRight: "40px" }}> ✈ Flight</span>
-          <span style={{ color: "black", marginRight: "40px" }}>🌃 Hotels</span>
-          <span style={{ color: "black", marginRight: "40px" }}>🚄 Trains</span>
-          <span style={{ color: "black", marginRight: "40px" }}>🚖 Cabs</span>
-          <span style={{ color: "black", marginRight: "40px" }}>🚌 Bus</span>
-          <span style={{ color: "black", marginRight: "40px" }}>⛺ Holiday</span>
+        {/* Mobile Menu Icon */}
+        <Box sx={{ display: { xs: "block", sm: "none" } }}>
+          <IconButton edge="start" color="inherit" aria-label="menu" onClick={handleDrawerToggle}>
+            <MenuIcon />
+          </IconButton>
         </Box>
 
-        {/* Mobile Menu Button (for smaller screens) */}
+        {/* Desktop Menu */}
         <Box
           sx={{
-            display: { xs: "block", sm: "none" }, // Show only on small screens
+            display: { xs: "none", sm: "flex" },
+            gap: 2,
+            marginLeft: "30px",
+            fontSize: { xs: "0.9rem", sm: "1.1rem" },
           }}
         >
           <Button
             color="inherit"
-            onClick={handleMobileMenuOpen}
-            sx={{
-              fontFamily: "Poppins, sans-serif",
-              fontSize: "1.5rem",
-            }}
+            component="a"
+            href="https://www.kayak.com/flights"
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={buttonStyles}
           >
-            ☰
+            ✈ Flight
+          </Button>
+          <Button
+            color="inherit"
+            component="a"
+            href="https://www.makemytrip.com/hotels/"
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={buttonStyles}
+          >
+            🏩 Hotels
+          </Button>
+          <Button
+            color="inherit"
+            component="a"
+            href="https://www.makemytrip.com/trains/"
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={buttonStyles}
+          >
+            🚄 Trains
+          </Button>
+          <Button
+            color="inherit"
+            component="a"
+            href="https://www.makemytrip.com/cabs/"
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={buttonStyles}
+          >
+            🚘 Cabs
+          </Button>
+          <Button
+            color="inherit"
+            component="a"
+            href="https://www.makemytrip.com/buses/"
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={buttonStyles}
+          >
+            🚎 Bus
+          </Button>
+          <Button
+            color="inherit"
+            component="a"
+            href="https://www.makemytrip.com/hotels/"
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={buttonStyles}
+          >
+            ⛱ Holiday
           </Button>
         </Box>
-
-        {/* Mobile Menu */}
-        <Menu
-          anchorEl={anchorEl}
-          open={mobileMenuOpen}
-          onClose={handleMobileMenuClose}
-          sx={{ display: { xs: "block", sm: "none" } }}
-        >
-          <MenuItem onClick={handleMobileMenuClose} component={RouterLink} to="/login">
-            Login
-          </MenuItem>
-          <MenuItem onClick={handleMobileMenuClose} component={RouterLink} to="/contacts">
-            ContactUs
-          </MenuItem>
-        </Menu>
-
-        {/* Right Side Buttons */}
-        <Box sx={{ display: "flex", color: "lightgreen" }}>
-          {isAuthenticated ? (
-            <>
-              {user && user.role === "Admin" && (
-                <Button
-                  color="inherit"
-                  component={RouterLink}
-                  to="/packages/create"
-                  sx={{
-                    fontFamily: "Poppins, sans-serif",
-                    fontSize: { xs: "0.9rem", sm: "1.2rem" },
-                    fontWeight: "500",
-                    padding: "6px 16px",
-                    transition: "background-color 0.3s ease",
-                    "&:hover": {
-                      backgroundColor: "rgba(255, 255, 255, 0.2)",
-                    },
-                  }}
-                >
-                  Create Package
-                </Button>
-              )}
-              <Button
-                color="inherit"
-                sx={{
-                  fontFamily: "Poppins, sans-serif",
-                  fontSize: { xs: "0.9rem", sm: "1.2rem" },
-                  fontWeight: "500",
-                  padding: "6px 16px",
-                  transition: "background-color 0.3s ease",
-                  "&:hover": {
-                    backgroundColor: "red",
-                  },
-                }}
-              >
-                Logout
-              </Button>
-            </>
-          ) : (
-            <>
-              <Button
-                color="inherit"
-                component={RouterLink}
-                to="/login"
-                sx={{
-                  fontFamily: "Poppins, sans-serif",
-                  fontSize: { xs: "0.9rem", sm: "1.2rem" },
-                  fontWeight: "500",
-                  padding: "6px 16px",
-                  transition: "background-color 0.3s ease",
-                  "&:hover": {
-                    backgroundColor: "rgba(255, 255, 255, 0.2)",
-                  },
-                }}
-              >
-                Login
-              </Button>
-              <Button
-                color="inherit"
-                component={RouterLink}
-                to="/contacts"
-                sx={{
-                  fontFamily: "Poppins, sans-serif",
-                  fontSize: { xs: "0.9rem", sm: "1.2rem" },
-                  fontWeight: "500",
-                  padding: "6px 16px",
-                  transition: "background-color 0.3s ease",
-                  "&:hover": {
-                    backgroundColor: "rgba(255, 255, 255, 0.2)",
-                  },
-                }}
-              >
-                Contact Us
-              </Button>
-            </>
-          )}
-        </Box>
       </Toolbar>
+
+      {/* Mobile Drawer */}
+      <Drawer
+        anchor="left"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{
+          keepMounted: true,
+        }}
+        aria-label="Navigation Menu"
+        sx={{
+          display: { xs: "block", sm: "none" },
+        }}
+      >
+        {drawerContent}
+      </Drawer>
     </AppBar>
   );
 }

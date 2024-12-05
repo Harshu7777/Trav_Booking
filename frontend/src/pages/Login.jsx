@@ -39,7 +39,7 @@ const Login = () => {
           flexDirection: 'column',
           alignItems: 'center',
           gap: 3,
-          minWidth: 400,
+          minWidth: 300,
           maxWidth: 600,
           minHeight: 350,
           padding: 4,
@@ -50,7 +50,7 @@ const Login = () => {
         }}
       >
         <Typography variant="h4" component="h2" gutterBottom>
-          Admin/User Login
+          <span style={{color: "orangered"}}>Login</span>
         </Typography>
         <TextField
           label="Email"

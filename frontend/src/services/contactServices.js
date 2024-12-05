@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Set the base URL for your API, you can change this if needed
-const API_URL = 'https://trav-booking.onrender.com'; // Change to your actual backend URL
+const API_URL = 'http://localhost:4000/api/admin/contact'; // Change to your actual backend URL
 
 // Create a new contact
 const createContact = async (contactData) => {
