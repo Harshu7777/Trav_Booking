@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://trav-booking.onrender.com';
+const API_URL = 'https://trav-booking-6.onrender.com/api/booking';
 
 // Fetch all bookings (Admin only)
 export const getBookings = async (token) => {

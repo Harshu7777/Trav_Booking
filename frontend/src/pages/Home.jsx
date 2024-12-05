@@ -205,7 +205,7 @@ export default function HomePage() {
               padding: "8px 17px",
               borderRadius: "10px",
               marginTop: 2,
-              marginLeft: 3,
+              marginLeft: 1,
               textTransform: "none",
               fontFamily: "Poppins, sans-serif",
               borderColor: "#fff",
@@ -368,10 +368,22 @@ export default function HomePage() {
                       fontWeight: "bold",
                       fontFamily: "sans-serif",
                       borderRadius: "4px",
+                      border: "none",
+                      cursor: "pointer",
+                      transition: "background-color 0.3s ease, color 0.3s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.backgroundColor = "darkblue";
+                      e.target.style.color = "lightblue";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.backgroundColor = "blue";
+                      e.target.style.color = "white";
                     }}
                   >
                     More Benefits
                   </button>
+
                   <Typography
                     variant="h5"
                     sx={{ marginTop: "8px", fontFamily: "sans-serif" }}
@@ -411,7 +423,8 @@ export default function HomePage() {
                           }}
                         >
                           <Typography variant="body2">
-                            👨‍🎓 Student <br /> Extra Offer
+                            👨‍🎓 <span style={{ fontSize: "20px" }}>Student</span>{" "}
+                            <br /> Extra Offer
                           </Typography>
                         </Box>
                       }
@@ -431,7 +444,11 @@ export default function HomePage() {
                           }}
                         >
                           <Typography variant="body2">
-                            👴 Senior Citizen <br /> Exclusive Offer
+                            👴{" "}
+                            <span style={{ fontSize: "20px" }}>
+                              Senior Citizen
+                            </span>{" "}
+                            <br /> Exclusive Offer
                           </Typography>
                         </Box>
                       }
@@ -451,7 +468,11 @@ export default function HomePage() {
                           }}
                         >
                           <Typography variant="body2">
-                            💂‍♀️ Armed Force <br /> Exclusive Offer
+                            💂‍♀️{" "}
+                            <span style={{ fontSize: "20px" }}>
+                              Armed Force
+                            </span>{" "}
+                            <br /> Exclusive Offer
                           </Typography>
                         </Box>
                       }
@@ -471,7 +492,11 @@ export default function HomePage() {
                           }}
                         >
                           <Typography variant="body2">
-                            👨‍⚕️ Doctor & Nurse <br /> Discount
+                            👨‍⚕️{" "}
+                            <span style={{ fontSize: "20px" }}>
+                              Doctor & Nurse{" "}
+                            </span>
+                            <br /> Discount
                           </Typography>
                         </Box>
                       }
@@ -542,7 +567,7 @@ export default function HomePage() {
           <Box
             sx={{
               width: "100%",
-              height: "30vh", // You can adjust the height as needed
+              height: "35vh", // You can adjust the height as needed
               overflow: "hidden",
               position: "relative",
               background: "#f5f5f5",
@@ -552,6 +577,7 @@ export default function HomePage() {
             {/* Scrolling content */}
             <Box
               sx={{
+                marginTop: 2.8,
                 display: "flex",
                 position: "absolute",
                 whiteSpace: "nowrap",
@@ -781,7 +807,7 @@ export default function HomePage() {
             sm={12}
             md={3}
             sx={{
-              textAlign: { xs: "center", md: "left" }, // Center for small screens
+              textAlign: { xs: "center", md: "left" },
             }}
           >
             <Typography variant="h6" gutterBottom>
