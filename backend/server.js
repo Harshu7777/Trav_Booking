@@ -1,15 +1,3 @@
-<<<<<<< HEAD
-const express = require("express");
-const adminRoutes = require("./routes/adminRoutes");
-const packageRoutes = require("./routes/packageRoutes");
-const bookingRoutes = require("./routes/bookingRoutes");
-const contactRoutes = require("./routes/contactRoutes");
-const { notFound, errorHandler } = require("./middlewares/errorMiddleware");
-const morgan = require("morgan");
-const dotenv = require("dotenv");
-const dbConnect = require("./config/db");
-const cors = require("cors");
-=======
 const express = require('express');
 const adminRoutes = require('./routes/adminRoutes');
 const packageRoutes = require('./routes/packageRoutes');
@@ -21,7 +9,6 @@ const dotenv = require('dotenv');
 const dbConnect = require('./config/db');
 const cors = require('cors');
 const path = require("path");
->>>>>>> e3072bf (Api change)
 
 // Load environment variables
 dotenv.config();
