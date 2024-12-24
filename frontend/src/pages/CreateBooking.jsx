@@ -1,12 +1,56 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Typography, TextField, Button, Box } from '@mui/material';
+import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
-import { Elements, useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
-import { createBooking } from '../services/bookServices.js';
+import {
+  Typography,
+  TextField,
+  Button,
+  CircularProgress,
+  Alert,
+  Box,
+  Paper,
+  Container
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
 
-const stripePromise = loadStripe('pk_test_51QQ4RNHU864JrHStp0fhIgq0SI6isIkHe8wLmh5ObV6Z957z12zU5v4ppMLaZ4KzIZdGAI84htnIlHdKDuPAIARl00LDYI5BRI');
+const stripePromise = loadStripe("pk_test_51QQ4RNHU864JrHStp0fhIgq0SI6isIkHe8wLmh5ObV6Z957z12zU5v4ppMLaZ4KzIZdGAI84htnIlHdKDuPAIARl00LDYI5BRI");
 
-function CreateBooking() {
+const useStyles = makeStyles((theme) => ({
+  container: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100vh',
+    backgroundColor: '#f7f7f7',
+  },
+  paper: {
+    padding: theme.spacing(4),
+    borderRadius: '10px',
+    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+    backgroundColor: '#fff',
+    width: '100%',
+    maxWidth: '500px',
+  },
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  title: {
+    textAlign: 'center',
+    marginBottom: theme.spacing(2),
+  },
+  inputField: {
+    marginBottom: theme.spacing(2),
+  },
+  submitButton: {
+    marginTop: theme.spacing(2),
+  },
+  alert: {
+    marginTop: theme.spacing(2),
+  },
+}));
+
+const CreateBooking = () => {
   const [bookingData, setBookingData] = useState({
     customerName: '',
     contactInfo: '',
@@ -15,8 +59,11 @@ function CreateBooking() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  const stripe = useStripe();
-  const elements = useElements();
+  const location = useLocation();
+  const navigate = useNavigate(); // Hook for navigation
+  const packagePrice = location.state?.price || 0;
+
+  const classes = useStyles();
 
   const handleChange = (e) => {
     setBookingData({ ...bookingData, [e.target.name]: e.target.value });
@@ -28,89 +75,90 @@ function CreateBooking() {
     setErrorMessage('');
     setSuccessMessage('');
 
-    if (!stripe || !elements) {
-      setErrorMessage('Stripe.js has not loaded properly.');
-      setIsLoading(false);
-      return;
-    }
-
     try {
-      const cardElement = elements.getElement(CardElement);
-      const { token, error } = await stripe.createToken(cardElement);
+      const stripe = await stripePromise;
 
-      if (error) {
-        setErrorMessage(error.message);
-        setIsLoading(false);
+      const response = await fetch('http://localhost:4000/payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ product: { name: 'Booking Payment', price: packagePrice } }),
+      });
+
+      const session = await response.json();
+
+      const result = await stripe.redirectToCheckout({
+        sessionId: session.id,
+      });
+
+      if (result.error) {
+        setErrorMessage(result.error.message);
         return;
       }
 
-      const response = await createBooking({ ...bookingData, token: token.id });
-      setSuccessMessage(`Booking created successfully! Booking ID: ${response.id}`);
-      setBookingData({ customerName: '', contactInfo: '', numberOfTravelers: '' });
+      setSuccessMessage('Booking created successfully!');
+      navigate('/dashboard');
+
     } catch (err) {
-      setErrorMessage(err.response?.data?.message || err.message || 'Something went wrong!');
+      setErrorMessage(err.message || 'Something went wrong!');
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <Elements stripe={stripePromise}>
-      <Container maxWidth="sm" sx={{ mt: 10 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Create a Booking
+    <Container className={classes.container}>
+      <Paper className={classes.paper}>
+        <Typography variant="h6" component="h2" gutterBottom className={classes.title}>
+          Package Price: ${packagePrice}
         </Typography>
-        <Box sx={{ mt: 3 }}>
-          <form onSubmit={handleSubmit}>
-            <TextField
-              fullWidth
-              label="Full Name"
-              name="customerName"
-              value={bookingData.customerName}
-              onChange={handleChange}
-              required
-              margin="normal"
-            />
-            <TextField
-              fullWidth
-              label="Contact Information"
-              name="contactInfo"
-              value={bookingData.contactInfo}
-              onChange={handleChange}
-              required
-              margin="normal"
-            />
-            <TextField
-              fullWidth
-              label="Number of Travelers"
-              name="numberOfTravelers"
-              type="number"
-              value={bookingData.numberOfTravelers}
-              onChange={handleChange}
-              required
-              margin="normal"
-            />
-            <Box sx={{ mt: 3, border: '1px solid #ccc', borderRadius: 2, p: 2 }}>
-              <Typography variant="body1">Payment Details:</Typography>
-              <CardElement />
-            </Box>
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              fullWidth
-              sx={{ mt: 3 }}
-              disabled={isLoading}
-            >
-              {isLoading ? 'Processing...' : 'Confirm Booking & Pay'}
-            </Button>
-          </form>
-          {successMessage && <Typography color="success.main">{successMessage}</Typography>}
-          {errorMessage && <Typography color="error.main">{errorMessage}</Typography>}
-        </Box>
-      </Container>
-    </Elements>
+        <form onSubmit={handleSubmit} className={classes.form}>
+          <TextField
+            label="Customer Name"
+            name="customerName"
+            value={bookingData.customerName}
+            onChange={handleChange}
+            fullWidth
+            className={classes.inputField}
+            variant="outlined"
+            required
+          />
+          <TextField
+            label="Contact Information"
+            name="contactInfo"
+            value={bookingData.contactInfo}
+            onChange={handleChange}
+            fullWidth
+            className={classes.inputField}
+            variant="outlined"
+            required
+          />
+          <TextField
+            label="Number of Travelers"
+            name="numberOfTravelers"
+            value={bookingData.numberOfTravelers}
+            onChange={handleChange}
+            type="number"
+            fullWidth
+            className={classes.inputField}
+            variant="outlined"
+            required
+          />
+          {errorMessage && <Alert severity="error" className={classes.alert}>{errorMessage}</Alert>}
+          {successMessage && <Alert severity="success" className={classes.alert}>{successMessage}</Alert>}
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            disabled={isLoading}
+            fullWidth
+            className={classes.submitButton}
+          >
+            {isLoading ? <CircularProgress size={24} /> : 'Create Booking'}
+          </Button>
+        </form>
+      </Paper>
+    </Container>
   );
-}
+};
 
 export default CreateBooking;

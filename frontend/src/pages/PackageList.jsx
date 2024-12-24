@@ -21,12 +21,12 @@ const PackageList = () => {
     title: "",
     destination: "",
     price: "",
-    date: ""
+    date: "",
   });
 
   // Fetch role and initial packages
   useEffect(() => {
-    const role = localStorage.getItem("role"); 
+    const role = localStorage.getItem("role");
     setIsAdmin(role === "admin");
 
     // Retrieve packages from localStorage (or set initial if empty)
@@ -45,29 +45,32 @@ const PackageList = () => {
       parseFloat(newPackage.price) > 0
     ) {
       const newId = packages.length + 1;
-  
+
       // Format the date before adding it to the package
-      const formattedDate = new Date(newPackage.date).toLocaleDateString("en-US", {
-        weekday: "long", 
-        year: "numeric",
-        month: "short", 
-        day: "numeric",
-      });
-  
+      const formattedDate = new Date(newPackage.date).toLocaleDateString(
+        "en-US",
+        {
+          weekday: "long",
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        }
+      );
+
       const packageToAdd = {
         id: newId,
         ...newPackage,
         price: parseFloat(newPackage.price),
         date: formattedDate, // Store the formatted date
       };
-  
+
       // Update state to add new package
       const updatedPackages = [...packages, packageToAdd];
       setPackages(updatedPackages);
-  
+
       // Save the updated package list to localStorage
       localStorage.setItem("packages", JSON.stringify(updatedPackages));
-  
+
       // Close modal and reset form
       setShowModal(false);
       setNewPackage({ title: "", destination: "", price: "", date: "" });
@@ -75,7 +78,7 @@ const PackageList = () => {
       alert("Please fill in all fields correctly.");
     }
   };
-  
+
   // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -106,9 +109,11 @@ const PackageList = () => {
         Travel Packages
       </Typography>
 
-      <Button variant="contained" color="primary" onClick={handleOpen}>
-        Create New Package
-      </Button>
+      {isAdmin && (
+        <Button variant="contained" color="primary" onClick={handleOpen}>
+          Create New Package
+        </Button>
+      )}
 
       {/* Modal for Creating a New Package */}
       <Modal
@@ -158,7 +163,6 @@ const PackageList = () => {
             fullWidth
             margin="normal"
           />
-
           <TextField
             label="Price"
             name="price"
@@ -180,11 +184,7 @@ const PackageList = () => {
         </Box>
       </Modal>
 
-      <br />
-      <br />
-
-      {/* Package List */}
-      <Grid container spacing={4}>
+      <Grid container spacing={4} sx={{ marginTop: 3 }}>
         {packages.map((pkg) => (
           <Grid item key={pkg.id} xs={12} sm={6} md={4}>
             <Card
@@ -204,7 +204,7 @@ const PackageList = () => {
                   position: "relative",
                   height: "100%",
                   backgroundImage:
-                    "url(https://imgs.search.brave.com/melDOrQpcYUEQlbFU_KHKIYe42egU7iXeh7gASGzJNA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9lbGVt/ZW50cy1yZXNpemVk/LmVudmF0b3VzZXJj/b250ZW50LmNvbS9l/bGVtZW50cy1jb3Zl/ci1pbWFnZXMvNGNh/YzUwMjYtMDAwYi00/NWE3LThjYTYtZmFk/ZTZiNjFjNWVjP3c9/NDMzJmNmX2ZpdD1z/Y2FsZS1kb3duJnE9/ODUmZm9ybWF0PWF1/dG8mcz01MDlhNjEy/Y2YxZGQ0YzJiOTA1/ZjBiYzAzOTUzNzlk/MmQ4NDc0MmM4YWRl/M2JkNTI0NTA1MjE2/ODEyYzI3NDk0)",
+                    "url(https://imgs.search.brave.com/CMNpmAWKlVrM5bUCevhm-K4WL6Y2EP78BJe801g1sW0/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/ZnJlZS1waG90by90/cmF2ZWwtY29uY2Vw/dC13aXRoLWJhZ2dh/Z2VfMjMtMjE0OTE1/MzI2MC5qcGc_c2Vt/dD1haXNfaHlicmlk)",
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                   borderRadius: 2,
@@ -244,7 +244,7 @@ const PackageList = () => {
                   sx={{
                     position: "absolute",
                     bottom: "10px",
-                    left: "80%",
+                    left: "50%",
                     transform: "translateX(-50%)",
                     zIndex: 2,
                   }}
@@ -252,11 +252,13 @@ const PackageList = () => {
                   <Button
                     size="medium"
                     component={RouterLink}
-                    to={`/bookings/create`}
+                    to="/bookings/create"
+                    state={{ price: pkg.price, title: pkg.title }}
                     sx={{
                       borderRadius: "25px",
                       backgroundColor: "#f9a825",
                       color: "#fff",
+                      marginLeft:20,
                       padding: "6px 20px",
                     }}
                   >

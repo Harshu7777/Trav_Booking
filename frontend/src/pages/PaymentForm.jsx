@@ -1,10 +1,21 @@
-import React from 'react';
-import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
-import CreateBooking from './CreateBooking';
+import React, { useState, useEffect } from "react";
+import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 
-function PaymentForm() {
+function PaymentCard() {
   const stripe = useStripe();
   const elements = useElements();
+  const [clientSecret, setClientSecret] = useState("");
+
+  useEffect(() => {
+    // Fetch clientSecret from your backend
+    fetch("http://localhost:4000/create-payment-intent", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount: 1000 }), // Replace with actual amount
+    })
+      .then((res) => res.json())
+      .then((data) => setClientSecret(data.clientSecret));
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -14,26 +25,28 @@ function PaymentForm() {
       return;
     }
 
-    const cardElement = elements.getElement(CardElement);
-
-    const { token, error } = await stripe.createToken(cardElement);
+    // Confirm payment using clientSecret
+    const { error } = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: elements.getElement(CardElement),
+      },
+    });
 
     if (error) {
-      console.error(error);
+      console.error("Payment failed:", error.message);
     } else {
-      console.log('Token:', token);
-      // Send the token to your backend for processing
+      console.log("Payment successful!");
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <CreateBooking/>
-      <button type="submit" disabled={!stripe}>
-        Pay
+      <CardElement />
+      <button type="submit" disabled={!stripe || !clientSecret}>
+        Pay Now
       </button>
     </form>
   );
 }
 
-export default PaymentForm;
+export default PaymentCard;

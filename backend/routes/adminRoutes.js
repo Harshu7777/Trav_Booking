@@ -3,6 +3,7 @@ const {
   registerAdmin,
   loginAdmin,
   getAdminProfile,
+  logoutUser,
 } = require('../controllers/authController'); 
 const { protect, adminOnly } = require('../middlewares/authMiddleware'); // Include admin middleware
 const { validate } = require('../middlewares/validateMiddleware');
@@ -19,5 +20,6 @@ router.post('/login', validate(loginSchema), loginAdmin);
 // Protected Profile Route (requires authentication)
 router.get('/profile', protect, getAdminProfile);
 
+router.post("/logout", logoutUser);
 
 module.exports = router;

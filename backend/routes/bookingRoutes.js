@@ -27,13 +27,4 @@ router.put('/:id/status', protect, adminOnly, updateBookingStatus);
 // Delete a booking (admin-only route)
 router.delete('/:id', protect, adminOnly, deleteBooking);
 
-// Initiate Payment for a Booking (requires authentication)
-router.post('/:id/payment/initiate', protect, initiatePayment);
-
-// Confirm Payment for a Booking (requires authentication)
-router.post('/:id/payment/confirm', protect, confirmPayment);
-
-// Handle Payment Failure (requires authentication)
-router.post('/:id/payment/failure', protect, handlePaymentFailure);
-
 module.exports = router;

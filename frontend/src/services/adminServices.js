@@ -25,3 +25,14 @@ export const loginAdmin = async (credentials) => {
   }
 };
 
+export const logoutAdmin = async (credentials) => {
+  try {
+    const response = await axios.post(`http://localhost:4000/api/admin/logout`, credentials , {
+      headers: { 'Content-Type': 'application/json' },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : new Error('Network error');
+  }
+};
+

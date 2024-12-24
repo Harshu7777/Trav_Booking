@@ -1,10 +1,10 @@
 const bcrypt = require('bcryptjs');
 const Admin = require('../models/adminModel');
-const generateToken = require("../utils/generateToken"); // Ensure you have this utility
+const generateToken = require("../utils/generateToken"); 
 
 // Register Admin
 exports.registerAdmin = async (req, res) => {
-  const { name, email, password, role } = req.body; // Added role to the request body
+  const { name, email, password, role } = req.body;
 
   try {
     // Check if all fields are provided
@@ -16,7 +16,7 @@ exports.registerAdmin = async (req, res) => {
     const userExists = await Admin.findOne({ email });
 
     if (userExists) {
-      return res.status(400).json({ message: "Admin already exists" });
+      return res.status(400).json({ message: "User already exists" });
     }
 
     // Hash the password
@@ -34,7 +34,7 @@ exports.registerAdmin = async (req, res) => {
 
     // Send response with success message and token
     res.status(201).json({
-      message: "Admin registered successfully",
+      message: "User registered successfully",
       token: token,
       userId: newAdmin._id
     });
@@ -57,7 +57,7 @@ exports.loginAdmin = async (req, res) => {
     const user = await Admin.findOne({ email });
 
     if (!user) {
-      return res.status(400).json({ message: "Admin does not exist" });
+      return res.status(400).json({ message: "User does not exist" });
     }
 
     // Validate password
@@ -104,3 +104,30 @@ exports.getAdminProfile = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+exports.logoutUser = async (req, res) => {
+  try {
+    const { userId } = req.body;
+
+    // Check if userId is provided
+    if (!userId) {
+      return res.status(400).json({ success: false, message: "User ID is required for logout!" });
+    }
+
+    // Find the user by _id
+    const user = await Admin.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found!" });
+    }
+
+    // Clear the authentication cookie
+    res.clearCookie("accessToken");
+    return res.status(200).json({ success: true, message: "Logged out successfully!" });
+  } catch (error) {
+    console.error("Error during logout:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+

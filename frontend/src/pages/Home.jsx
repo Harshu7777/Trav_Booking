@@ -4,8 +4,12 @@ import React, { useState, useEffect } from "react";
 import { Facebook, Twitter, Instagram, LinkedIn } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import "../assets/home.css";
+import { styled } from '@mui/system'
+import { Heart, Plane } from "lucide-react";
 import {
   Card,
+  Paper,
+  CardMedia,
   CardContent,
   TextField,
   Divider,
@@ -18,11 +22,7 @@ import {
   FormControl,
   FormControlLabel,
   Radio,
-  RadioGroup,
-  ToggleButtonGroup,
-  ToggleButton,
-  Menu,
-  MenuItem,
+  RadioGroup
 } from "@mui/material";
 import {
   LocationOn,
@@ -54,7 +54,26 @@ const popularDestinations = [
     image:
       "https://imgs.search.brave.com/PL0AVzUZTDCNbpIgg6xR-UKqxTLel7x4HVOVWpXyMVo/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTY2/MzQzNzI2MC9waG90/by90b2t5by1za3ls/aW5lLWF0LW5pZ2h0/LmpwZz9zPTYxMng2/MTImdz0wJms9MjAm/Yz0wLU95bVBYZ2tZ/Vy1uaHJoOHdPZ2Nq/bUtKNV9xS2lYa0Q1/el9BbTF3OFVzPQ",
   },
+  {
+    name: "Australia",
+    image:
+      "https://imgs.search.brave.com/GXnwey0B-R0_bncamGoSV_IvzXPErh760UNy8iFy3vg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvNDkz/NjIxMTkyL3Bob3Rv/L21lbGJvdXJuZS1h/dC1kdXNrLmpwZz9z/PTYxMng2MTImdz0w/Jms9MjAmYz1vZ2pR/MVZPR3lSZFd2TGZR/TGZNQURJNGJLZEtD/X252MlQyalNSdE04/Q0NBPQ",
+  },
+  {
+    name: "Russia",
+    image:
+      "https://imgs.search.brave.com/2FC88fVZWjF27DV4s3VY6dp0vPBEZT7vKmraRvliMbg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cHJlbWl1bS1waG90/by9zdC1iYXNpbC1z/LWNhdGhlZHJhbC1y/ZWQtc3F1YXJlLW1v/c2Nvdy1jb2xvcmZ1/bC1jYXRoZWRyYWwt/cnVzc2lhLXN1bW1l/ci1kYXlzXzExNjEy/NC02NDk4LmpwZz9z/ZW10PWFpc19oeWJy/aWQ",
+  },
 ];
+
+
+const StyledCard = styled(Card)(({ theme }) => ({
+  transition: 'transform 0.2s',
+  '&:hover': {
+    transform: 'translateY(-8px)',
+  },
+}))
+
 
 const testimonials = [
   {
@@ -95,11 +114,121 @@ const testimonials = [
   },
 ];
 
+const destinations = [
+  {
+    city: "San Francisco",
+    code: "SFO",
+    price: 1867,
+    imageUrl:
+      "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=2400&q=80",
+  },
+  {
+    city: "Doha",
+    code: "DOH",
+    price: 514,
+    imageUrl:
+      "https://imgs.search.brave.com/fuB7XZ9Roz3enhV1-txG9o51rj4-w3iS-i7t_ZhOYdE/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvOTk3/MjkwNTcwL3Bob3Rv/L3ZpcmJhc2huamkt/ZG9sLmpwZz9zPTYx/Mng2MTImdz0wJms9/MjAmYz1xT2lJYXpv/RXhPMzN2c0ZkdWR0/a3Etd1k4TTdYWllT/WURKcUJINXhhcVdF/PQ",
+  },
+  {
+    city: "Cairo",
+    code: "CAI",
+    price: 707,
+    imageUrl:
+      "https://images.unsplash.com/photo-1572252009286-268acec5ca0a?auto=format&fit=crop&w=2400&q=80",
+  },
+];
+
+function Header({ startDate, endDate }) {
+  return (
+    <Box mb={4}>
+      <Box display="flex" alignItems="center" gap={1}>
+        <Plane size={24} color="blue" />
+        <Typography variant="h5" fontWeight="bold">
+          Explore the world from Lucknow
+        </Typography>
+      </Box>
+      <Typography variant="subtitle1" color="textSecondary">
+        Find flights departing {startDate} and returning {endDate}
+      </Typography>
+    </Box>
+  );
+}
+
+// Map Component
+function Map() {
+  return (
+    <Box
+      sx={{
+        position: "relative",
+        width: "100%",
+        height: 400,
+        borderRadius: 2,
+        overflow: "hidden",
+      }}
+    >
+      <iframe
+        title="Flight Map"
+        width="100%"
+        height="100%"
+        style={{ border: 0 }}
+        loading="lazy"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30766587.069145154!2d60.975476867354665!3d19.725949986729145!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30635ff06b92b791%3A0xd78c4fa1854213a6!2sIndia!5e0!3m2!1sen!2sin!4v1733637505061!5m2!1sen!2sin"
+      />
+    </Box>
+  );
+}
+
+// Flight Card Component
+function FlightCard({ city, code, price, imageUrl }) {
+  return (
+    <Card sx={{ display: "flex", boxShadow: 2 }}>
+      <CardMedia
+        component="img"
+        image={imageUrl}
+        alt={city}
+        sx={{ width: 120, height: 120, borderRadius: 2 }}
+      />
+      <CardContent sx={{ flexGrow: 1 }}>
+        <Typography variant="h6">{city}</Typography>
+        <Typography variant="body2" color="textSecondary">
+          LKO - {code}
+        </Typography>
+        <Typography variant="h6" fontWeight="bold" mt={1}>
+          ${price.toLocaleString()}
+        </Typography>
+      </CardContent>
+      <IconButton>
+        <Heart size={24} style={{ transition: "0.3s" }} />
+      </IconButton>
+    </Card>
+  );
+}
+
+
 export default function HomePage() {
-  const [email, setEmail] = useState("");
-  const [language, setLanguage] = useState("English");
   const [isScrollButtonVisible, setIsScrollButtonVisible] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % popularDestinations.length);
+    }, 2000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const visibleDestinations = [
+    popularDestinations[currentIndex],
+    popularDestinations[(currentIndex + 1) % popularDestinations.length],
+    popularDestinations[(currentIndex + 2) % popularDestinations.length],
+  ];
+
+  // Check if `popularDestinations` is empty
+  if (!popularDestinations || popularDestinations.length === 0) {
+    return <Typography>No destinations available</Typography>;
+  }
+
 
   useEffect(() => {
     const toggleScrollButtonVisibility = () => {
@@ -113,21 +242,6 @@ export default function HomePage() {
     return () =>
       window.removeEventListener("scroll", toggleScrollButtonVisibility);
   }, []);
-
-  const handleSubscribe = (e) => {
-    e.preventDefault();
-    console.log("Subscribed with email:", email);
-    setEmail("");
-  };
-
-  const handleLanguageClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleLanguageClose = (lang) => {
-    setLanguage(lang);
-    setAnchorEl(null);
-  };
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -528,36 +642,111 @@ export default function HomePage() {
           </Card>
         </Box>
 
-        {/* Popular Destinations */}
-        <Box mb={6}>
-          <Typography variant="h4" gutterBottom>
-            Popular Destinations
-          </Typography>
-          <Grid container spacing={2}>
-            {popularDestinations.map((destination, index) => (
-              <Grid item xs={12} sm={6} md={3} key={index}>
-                <Card
+        {/* Model from website */}
+
+        <Box sx={{ minHeight: "100vh", py: 3 }}>
+          <Box
+            sx={{
+              maxWidth: "lg",
+              mx: "auto",
+              backgroundColor: "#fff",
+              borderRadius: 2,
+              boxShadow: 3,
+              p: 4,
+            }}
+          >
+            {/* Header */}
+            <Header startDate="Tue, 01/07" endDate="Tue, 01/14" />
+
+            <Grid container spacing={4}>
+              {/* Map Section */}
+              <Grid item xs={14} lg={6}>
+                <Paper
+                  elevation={4}
                   sx={{
-                    transition: "transform 0.2s",
-                    "&:hover": { transform: "translateY(-8px)" },
+                    borderRadius: 2,
+                    overflow: "hidden",
+                    border: "1px solid #e0e0e0",
                   }}
                 >
-                  <Box
-                    component="img"
-                    src={destination.image}
-                    alt={destination.name}
-                    sx={{ width: "110%", height: 220, objectFit: "cover" }}
-                  />
-                  <CardContent>
-                    <Typography variant="h6" fontWeight="bold">
-                      {destination.name}
-                    </Typography>
-                  </CardContent>
-                </Card>
+                  <Map />
+                </Paper>
+
               </Grid>
-            ))}
-          </Grid>
+
+              {/* Destinations Section */}
+              <Grid item xs={12} lg={6}>
+                <Box
+                  mb={2}
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  sx={{ borderBottom: "2px solid #e0e0e0", pb: 1 }}
+                >
+                  <Typography
+                    variant="h5"
+                    fontWeight="bold"
+                    color="primary.dark"
+                  >
+                    Popular Destinations
+                  </Typography>
+                  <Button variant="contained" color="primary" size="small">
+                    See all
+                  </Button>
+                </Box>
+
+                <Grid container spacing={2}>
+                  {destinations.map((destination) => (
+                    <Grid item xs={12} key={destination.code}>
+                      <FlightCard
+                        city={destination.city}
+                        code={destination.code}
+                        price={destination.price}
+                        imageUrl={destination.imageUrl}
+                      />
+                    </Grid>
+                  ))}
+                </Grid>
+              </Grid>
+            </Grid>
+          </Box>
         </Box>
+
+        {/* Popular Destinations */}
+        <Box sx={{ maxWidth: 'lg', mx: 'auto', px: 2, py: 4 }}>
+      <Typography variant="h4" gutterBottom>
+        Popular Destinations
+      </Typography>
+      <Grid container spacing={2}>
+        {visibleDestinations.map((destination, index) => (
+          <Grid item xs={12} sm={6} md={4} key={index}>
+            <StyledCard>
+              <CardMedia
+                component="img"
+                height="240"
+                image={destination.image}
+                alt={destination.name}
+              />
+              <CardContent>
+                <Box display="flex" flexDirection="row" alignItems="center" justifyContent="space-between">
+                  <Typography variant="h5" fontWeight="bold">
+                    {destination.name}
+                  </Typography>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    sx={{ ml: 'auto' }}
+                  >
+                    50% OFF First Trip
+                  </Button>
+                </Box>
+              </CardContent>
+            </StyledCard>
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
 
         {/* Testimonials Section with Animation */}
         <Box mb={6}>
