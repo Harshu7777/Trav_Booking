@@ -78,7 +78,7 @@ const CreateBooking = () => {
     try {
       const stripe = await stripePromise;
 
-      const response = await fetch('http://localhost:4000/payment', {
+      const response = await fetch('https://trav-booking-6.onrender.com/payment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ product: { name: 'Booking Payment', price: packagePrice } }),
